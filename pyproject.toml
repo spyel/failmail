@@ -6,6 +6,7 @@ build-backend = 'hatchling.build'
 name = 'failmail'
 dynamic = ['version']
 description = 'A Python package to notify users via email when exceptions occur.'
+readme = 'README.md'
 license = {file = 'LICENSE'}
 requires-python = '>=3.10'
 dependencies = []
