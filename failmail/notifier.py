@@ -18,11 +18,13 @@ class ExceptionNotifier:
     def __init__(
         self,
         host: tuple[str, int],
-        credentials: tuple[str, str],
+        sender_email: str,
+        credentials: tuple[str, str] | None = None,
         encryption: str = 'tls'
     ) -> None:
         self.host, self.port = host
-        self.username, self.password = credentials
+        self.sender_email: str = sender_email
+        self.credentials: tuple[str, str] | None = credentials
         self.encryption: str = encryption
         self.registry: ExceptionRegistry = ExceptionRegistry()
 
@@ -73,14 +75,15 @@ class ExceptionNotifier:
         subject, body = entry.format(context)
 
         message = MIMEMultipart()
-        message['From'] = self.username
+        message['From'] = self.sender_email
         message['To'] = ', '.join(entry.recipients)
         message['Subject'] = subject
         message.attach(MIMEText(body, entry.body_type))
 
         try:
             with self._get_connection() as connection:
-                connection.login(self.username, self.password)
+                if self.credentials:
+                    connection.login(self.credentials[0], self.credentials[1])
                 connection.sendmail(message['From'], message['To'], message.as_string())
                 logger.info(f'Notification sent to: {', '.join(entry.recipients)}')
         except smtplib.SMTPException as e:
