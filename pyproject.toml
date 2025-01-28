@@ -1,0 +1,18 @@
+[build-system]
+requires = ['hatchling>=1.27.0']
+build-backend = 'hatchling.build'
+
+[project]
+name = 'failmail'
+dynamic = ['version']
+description = 'A Python package to notify users via email when exceptions occur.'
+license = {file = 'LICENSE'}
+requires-python = '>=3.10'
+dependencies = []
+
+[project.urls]
+Homepage = 'https://github.com/spyel/failmail'
+Issues = 'https://github.com/spyel/failmail/issues'
+
+[tool.hatch.version]
+path = 'failmail/__init__.py'
