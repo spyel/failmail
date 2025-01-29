@@ -84,7 +84,7 @@ class ExceptionNotifier:
             with self._get_connection() as connection:
                 if self.credentials:
                     connection.login(self.credentials[0], self.credentials[1])
-                connection.sendmail(message['From'], message['To'], message.as_string())
+                connection.send_message(message)
                 logger.info(f'Notification sent to: {', '.join(entry.recipients)}')
         except smtplib.SMTPException as e:
             logger.error(f'Failed to send notification to {', '.join(entry.recipients)}: {e}', exc_info=True)
